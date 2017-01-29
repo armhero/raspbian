@@ -16,8 +16,12 @@ tmp() {
 
 mkbase() {
 	cd $TMP
+	echo "Download release key..."
+	wget https://archive.raspbian.org/raspbian.public.key
+	gpg --import raspbian.public.key
+
 	echo "Creating rootfs in $ROOTFS"
-	debootstrap --arch $ARCH --variant minbase $REL $ROOTFS/ $MIRROR
+	debootstrap --keyring /root/.gnupg/pubring.gpg --arch $ARCH --variant minbase $REL $ROOTFS/ $MIRROR
 }
 
 conf() {
